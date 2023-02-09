@@ -20,7 +20,7 @@ public class Player extends Unit {
     private int score;
 
     /**
-     * The number of lives the player has
+     * The number of lives the player has.
      */
     private int lives;
 
@@ -98,7 +98,7 @@ public class Player extends Unit {
     }
 
     /**
-     * Decrements a life if the player is hit
+     * Decrements a life if the player is hit.
      */
     public void hitPlayer() {
         lives--;

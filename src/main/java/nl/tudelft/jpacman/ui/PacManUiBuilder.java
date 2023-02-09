@@ -61,7 +61,9 @@ public class PacManUiBuilder {
      * @return A new Pac-Man UI with the set keys and buttons.
      */
     public PacManUI build(final Game game) {
-        assert game != null;
+        if (game == null) {
+            throw new IllegalArgumentException("The game is null");
+        }
 
         if (defaultButtons) {
             addStartButton(game);
@@ -106,8 +108,12 @@ public class PacManUiBuilder {
      * @return The builder.
      */
     public PacManUiBuilder addKey(Integer keyCode, Action action) {
-        assert keyCode != null;
-        assert action != null;
+        if (keyCode == null) {
+            throw new IllegalArgumentException("The keyCode is null");
+        }
+        if (action == null) {
+            throw new IllegalArgumentException("The action is null");
+        }
 
         keyMappings.put(keyCode, action);
         return this;
@@ -123,9 +129,15 @@ public class PacManUiBuilder {
      * @return The builder.
      */
     public PacManUiBuilder addButton(String caption, Action action) {
-        assert caption != null;
-        assert !caption.isEmpty();
-        assert action != null;
+        if (caption == null) {
+            throw new IllegalArgumentException("The caption is null");
+        }
+        if (caption.isEmpty()) {
+            throw new IllegalArgumentException("The caption is empty");
+        }
+        if (action == null) {
+            throw new IllegalArgumentException("The action is null");
+        }
 
         buttons.put(caption, action);
         return this;

@@ -21,7 +21,7 @@ import nl.tudelft.jpacman.npc.Ghost;
  * A level of Pac-Man. A level consists of the board with the players and the
  * AIs on it.
  *
- * @author Jeroen Roosen 
+ * @author Jeroen Roosen
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class Level {
@@ -81,20 +81,22 @@ public class Level {
     /**
      * Creates a new level for the board.
      *
-     * @param board
-     *            The board for the level.
-     * @param ghosts
-     *            The ghosts on the board.
-     * @param startPositions
-     *            The squares on which players start on this board.
-     * @param collisionMap
-     *            The collection of collisions that should be handled.
+     * @param board          The board for the level.
+     * @param ghosts         The ghosts on the board.
+     * @param startPositions The squares on which players start on this board.
+     * @param collisionMap   The collection of collisions that should be handled.
      */
     public Level(Board board, List<Ghost> ghosts, List<Square> startPositions,
                  CollisionMap collisionMap) {
-        assert board != null;
-        assert ghosts != null;
-        assert startPositions != null;
+        if (board == null) {
+            throw new IllegalArgumentException("The board is null");
+        }
+        if (ghosts == null) {
+            throw new IllegalArgumentException("The ghosts is null");
+        }
+        if (startPositions == null) {
+            throw new IllegalArgumentException("The startPositions is null");
+        }
 
         this.board = board;
         this.inProgress = false;
@@ -112,8 +114,7 @@ public class Level {
     /**
      * Adds an observer that will be notified when the level is won or lost.
      *
-     * @param observer
-     *            The observer that will be notified.
+     * @param observer The observer that will be notified.
      */
     public void addObserver(LevelObserver observer) {
         observers.add(observer);
@@ -122,8 +123,7 @@ public class Level {
     /**
      * Removes an observer if it was listed.
      *
-     * @param observer
-     *            The observer to be removed.
+     * @param observer The observer to be removed.
      */
     public void removeObserver(LevelObserver observer) {
         observers.remove(observer);
@@ -134,11 +134,13 @@ public class Level {
      * player can only be registered once, registering a player again will have
      * no effect.
      *
-     * @param player
-     *            The player to register.
+     * @param player The player to register.
      */
     public void registerPlayer(Player player) {
-        assert player != null;
+        if (player == null) {
+            throw new IllegalArgumentException("The player is null");
+        }
+
         assert !startSquares.isEmpty();
 
         if (players.contains(player)) {
@@ -164,15 +166,21 @@ public class Level {
      * Moves the unit into the given direction if possible and handles all
      * collisions.
      *
-     * @param unit
-     *            The unit to move.
-     * @param direction
-     *            The direction to move the unit in.
+     * @param unit      The unit to move.
+     * @param direction The direction to move the unit in.
      */
     public void move(Unit unit, Direction direction) {
-        assert unit != null;
-        assert direction != null;
-        assert unit.hasSquare();
+        if (unit == null) {
+            throw new IllegalArgumentException("The unit is null");
+        }
+
+        if (direction == null) {
+            throw new IllegalArgumentException("The direction is null");
+        }
+
+        if (!unit.hasSquare()) {
+            throw new IllegalArgumentException("The unit square is null");
+        }
 
         if (!isInProgress()) {
             return;
@@ -280,7 +288,7 @@ public class Level {
      * is alive.
      *
      * @return <code>true</code> if at least one of the registered players is
-     *         alive.
+     * alive.
      */
     public boolean isAnyPlayerAlive() {
         for (Player player : players) {
@@ -297,7 +305,6 @@ public class Level {
      * @return The amount of pellets remaining on the board.
      */
     public int remainingPellets() {
-        Board board = getBoard();
         int pellets = 0;
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
@@ -332,10 +339,8 @@ public class Level {
         /**
          * Creates a new task.
          *
-         * @param service
-         *            The service that executes the task.
-         * @param npc
-         *            The NPC to move.
+         * @param service The service that executes the task.
+         * @param npc     The NPC to move.
          */
         NpcMoveTask(ScheduledExecutorService service, Ghost npc) {
             this.service = service;
